@@ -9,11 +9,13 @@ namespace WebApplicationAF.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ILogicProvider _logicProvider;
+        private readonly IGlobalLogging _globalLogging;
 
-        public HomeController(ILogger<HomeController> logger, ILogicProvider logicProvider)
+        public HomeController(ILogger<HomeController> logger, ILogicProvider logicProvider, IGlobalLogging globalLogging)
         {
             _logger = logger;
             _logicProvider = logicProvider;
+            _globalLogging = globalLogging;
         }
 
         [HttpGet]
@@ -24,6 +26,8 @@ namespace WebApplicationAF.Controllers
                 "Dennis",
                 _logicProvider.Something()
             };
+
+            _globalLogging.LogToEverything();
 
             return list;
         }

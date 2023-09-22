@@ -5,13 +5,25 @@ using Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjector
 {
-    public static void AddLogicDependencies(this IServiceCollection services)
+    private static readonly List<(Type, Type, string)> Tuples = new()
     {
-        services.AddScoped<ILogicProvider, LogicProvider>();
+        (typeof(ILogicProvider), typeof(LogicProvider), "Scoped"),
+        (typeof(IGlobalLogging), typeof(GlobalLogging), "Scoped")
+    };
+
+    public static void RegisterMsdi(this IServiceCollection services)
+    {
+        foreach (var valueTuple in Tuples.Where(t => t.Item3 == "Scoped"))
+        {
+            services.AddScoped(valueTuple.Item1, valueTuple.Item2);
+        }
     }
 
-    public static void AddLogicDependencies(this ContainerBuilder builder)
+    public static void RegisterAf(this ContainerBuilder builder)
     {
-        builder.RegisterType<LogicProvider>().As<ILogicProvider>().InstancePerLifetimeScope();
+        foreach (var valueTuple in Tuples.Where(t => t.Item3 == "Scoped"))
+        {
+            builder.RegisterType(valueTuple.Item2).As(valueTuple.Item1).InstancePerLifetimeScope();
+        }
     }
 }

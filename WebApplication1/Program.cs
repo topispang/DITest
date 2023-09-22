@@ -10,7 +10,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //Logic uses MS DI
-builder.Services.AddLogicDependencies();
+builder.Services.RegisterMsdi();
+
 
 var app = builder.Build();
 

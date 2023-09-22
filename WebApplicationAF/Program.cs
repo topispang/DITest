@@ -18,7 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Host.ConfigureContainer<ContainerBuilder>(di =>
 {
     // Declare your services with proper lifetime
-    di.AddLogicDependencies();
+    di.RegisterAf();
 });
 
 var app = builder.Build();
